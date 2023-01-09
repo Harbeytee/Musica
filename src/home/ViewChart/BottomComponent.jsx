@@ -14,12 +14,12 @@ export default function BottomComponent(props) {
         return `${min}:${sec >= 10 ? sec : '0' + sec}`
         
     }
-    const component = props.tracks.map(track => (
-        <div key={track.id} className="row">
+    const component = props.tracks.map((track, index) => (
+        <div style={{cursor: 'pointer'}} onClick={() => props.changeMusic(index)} key={track.id} className="row">
             
             <div style={{display: 'flex', alignItems: 'center'}}>
                 <div className='track-img'>
-                    <img src={track.artist.picture_small} alt="track image" className="track-image" />
+                    <img src={track.album.cover_medium} alt="track image" className="track-image" />
                     <img src={whiteHeart} alt="a white heart" className="white-heart" />
 
                 </div>

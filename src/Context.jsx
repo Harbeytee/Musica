@@ -16,6 +16,11 @@ export default function Provider(props) {
     const [display, setDisplay] = useState(false)
     const [popularTracks, setPopularTracks] = useState([])
     const [trackIndex, setTrackIndex] = useState(0);
+    const audioSrc = musicTracks[trackIndex]
+    const audioRef = useRef(new Audio(audioSrc));
+  
+
+
    //localStorage.clear()
    
     useEffect(() => {
@@ -127,8 +132,8 @@ function removeFromLikes(id) {
   .then (response => {
     
     let res = response.data
-    
-    torf(res.playlists.data.filter((res, index) => index < 3))
+    console.log(res)
+    torf(res.playlists.data.filter((res, index) => index > 1 && index < 5))
     
     setTracks(res.tracks.data.map(track => {
       return {...track, isFavorite: false}
@@ -154,7 +159,7 @@ function removeFromLikes(id) {
   
    
   return (
-    <Context.Provider  value={{search, handleChange, playlist, loading, tracks, toggleLikes, addToLikes, removeFromLikes, likes, display, hamburger, node, setLikes, music, musicTracks, setMusic, setMusicTracks, popularTracks, trackIndex, setTrackIndex}}>
+    <Context.Provider  value={{search, handleChange, playlist, loading, tracks, toggleLikes, addToLikes, removeFromLikes, likes, display, hamburger, node, setLikes, music, musicTracks, setMusic, setMusicTracks, popularTracks, trackIndex, setTrackIndex, audioSrc, audioRef}}>
         {props.children}
     </Context.Provider>
   )

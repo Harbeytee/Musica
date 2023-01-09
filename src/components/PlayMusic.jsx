@@ -1,33 +1,29 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import shuffleOn from './icons/shuffleOn.svg'
-import shuffleOff from './icons/shuffleoff.svg'
-import prev from './icons/prev.svg'
-import play from './icons/play.svg'
-import pause from './icons/pause.svg'
-import next from './icons/next.svg'
+import shuffleOn from './icons/shuffleOn.webp'
+import shuffleOff from './icons/shuffleoff.webp'
+import prev from './icons/prev.webp'
+import play from './icons/play.webp'
+import pause from './icons/pause.webp'
+import next from './icons/next.webp'
 import repeat from './icons/repeat.svg'
-import speaker from './icons/speaker.svg'
+import speaker from './icons/speaker.webp'
 import { Context } from '../Context'
   function PlayMusic() {
     
-  
+  const [test, setTest] = useState(false)
   const [trackProgress, setTrackProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50)
   const [shuffle, setShuffle] = useState(false)
   
   //console.log(isPlaying)
-  const { musicTracks, music, trackIndex, setTrackIndex } = useContext(Context)
+  const { musicTracks, music, trackIndex, setTrackIndex, audioSrc, audioRef } = useContext(Context)
   //console.log(tracks)
   const track =[
     'https://www.bensound.com/bensound-music/bensound-buddy.mp3', 'https://www.bensound.com//bensound-music/bensound-sunny.mp3', 'https://www.bensound.com/bensound-music/bensound-slowmotion.mp3', 
   ]
   
   
-  let audioSrc = musicTracks[trackIndex]
-
-  
-  const audioRef = useRef(new Audio(audioSrc));
   
   
   
@@ -89,16 +85,10 @@ import { Context } from '../Context'
 
   const pausePlay = () => {
     setIsPlaying(!isPlaying)
-    
-    
-    
-
   }
+
   const changeVolume = (e) => {
       setVolume(e.target.value)
-      
-      
-      
   }
   
 
@@ -146,22 +136,47 @@ import { Context } from '../Context'
     
   }, [isPlaying]);
 
+
   // Handles cleanup and setup when changing tracks
   useEffect(() => {
-    audioRef.current.pause();
+      if(test == true) {
+        audioRef.current.pause();
 
-    audioRef.current = new Audio(audioSrc);
-    setTrackProgress(audioRef.current.currentTime);
-    if(isReady) {
-      audioRef.current.play();
-      setIsPlaying(true)
-      startTimer()
-    }
-    setIsReady(true)
+        audioRef.current = new Audio(audioSrc);
+        setTrackProgress(audioRef.current.currentTime);
+        //if(isReady) {
+          audioRef.current.play();
+          setIsPlaying(true)
+          startTimer()
+        //}
+        //setIsReady(true)
+      }
+      
+   
+   
     
-  }, [trackIndex]);
-  const [test, setTest] = useState(false)
+  }, [trackIndex, musicTracks]);
+  /*const [isReadyer, setIsReadyer] = useState(false)
+  useEffect(() => {
+    if(test == true) {
+      audioRef.current.pause();
+
+      audioRef.current = new Audio(audioSrc);
+      
+      setTrackProgress(audioRef.current.currentTime);
+      if(isReadyer) {
+        audioRef.current.play();
+        setIsPlaying(true)
+        startTimer()
+      }
+      setIsReadyer(true)
+    }
+   
+    
+  }, [musicTracks]);*/
+
   
+
   useEffect(() => {
     if(musicTracks.length  > 1 && test == false) {
       audioRef.current = new Audio(audioSrc);
@@ -207,7 +222,7 @@ import { Context } from '../Context'
           </div>
           
             <div className='volume-bar'>
-              <img src={speaker} alt="speaker icon" className="speaker" />
+              <img style={{height: '20px', width: '20px'}} src={speaker} alt="speaker icon" className="speaker" />
               <input type="range" 
               className="volume" 
               min='0'

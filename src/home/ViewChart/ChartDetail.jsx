@@ -8,18 +8,32 @@ import BottomComponent from './BottomComponent'
 import Search from '../../components/Search'
 import topchart from '../topchart'
 export default function ChartDetail() {
-  const { playlist, hamburger, music, musicTracks, setMusic, setMusicTracks } = useContext(Context)
+  const { playlist, hamburger, setMusic, setMusicTracks, setTrackIndex, audioSrc, audioRef } = useContext(Context)
   const[loading, setLoading] = useState(true)
   const { id } = useParams()
   const [error, setError] = React.useState(null);
   const detail = playlist.find(chart => chart.id == id)
   const [result, setResult] = useState([])
+ 
   function playAll () {
-    setMusic(result.data.data)
-    setMusicTracks(result.data.data.map(track => track.preview))
+    audioRef.current.pause()
+    setMusic(result.data)
+    setMusicTracks(result.data.map(track => track.preview))
+    audioRef.current = new Audio(audioSrc);
+    setTrackIndex(0)
     
   }
- 
+
+  function changeMusic(val) {
+      
+    setMusic(result.data)
+    setMusicTracks(result.data.map(track => track.preview))
+    setTrackIndex(val)
+  }
+
+  useEffect(() => {
+      console.log(audioSrc)
+  }, [audioSrc])
   useEffect(() => {
     
     axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/${id}/tracks`)
@@ -46,14 +60,14 @@ export default function ChartDetail() {
   else {
   return (
     <div style={{backgroundImage: `linear-gradient(to bottom, rgba(30, 30, 30, 0.9), rgba(30, 30, 30, 0.9)),url(${detail.picture_big})`}} id='chart-detail'>
-      <Search background={'transparent'} position={'relative'} hamburger={hamburger} marginLeft={'-112px'}/>
+      <Search background={'transparent'} position={'relative'} hamburger={hamburger} marginLeft={window.matchMedia('(min-width: 895px)').matches? '-112px' : '0px'}/>
       <main className='chart-detail' >
       
         <div className='body'>
 
-          <TopComponent trackImg={detail.picture_medium} desc={detail.user.name} trackName={detail.title} songs={detail.nb_tracks} play={playAll}/>
+          <TopComponent trackImg={detail.picture_medium} desc={detail.user.name} trackName={detail.title} songs={result.data.length} play={playAll}/>
 
-          <BottomComponent tracks={result.data}/>
+          <BottomComponent tracks={result.data} changeMusic={changeMusic}/>
           
         </div>
         

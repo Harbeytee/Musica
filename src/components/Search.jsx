@@ -2,7 +2,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { Context } from '../Context'
 import musicIcon from  './icons/music-icon.svg'
-import searchIcon from  './icons/search-icon.svg'
+import searchIcon from  './icons/search-icon.webp'
  function Search({hamburger, background, position, marginLeft = '0'}) {
     const {search, handleChange} = useContext(Context)
 

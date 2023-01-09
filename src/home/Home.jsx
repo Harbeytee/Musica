@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import likes from './images/likes.svg'
+import likes from './images/likes.webp'
 import heart from './images/heart.svg'
 import TopCharts from './TopCharts'
 import vector from './images/topcharts/vector.svg'

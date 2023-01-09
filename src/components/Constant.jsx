@@ -12,9 +12,6 @@ export default function Constant() {
 
   const {display, node} = useContext(Context)
 
-  
-  
- 
 
   return (
     <>

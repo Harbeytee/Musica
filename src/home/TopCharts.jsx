@@ -13,15 +13,18 @@ export default function TopCharts() {
  
     const top = playlist.map(chart => (
         <div  className='chart' key={chart.id}>
-            <div className='chart-box'>
-                
-                <img src={chart.picture} alt="track image" className="chart-img" />
-                <div>
-                    <Link style={{textDecoration: 'none', color: '#fff'}} to ={`topchart/${chart.id}`}><h3>{chart.title}</h3></Link>
-                    <p className='chart-name'>{chart.user.name}</p>
-                    <p className='chart-time'>{chart.nb_tracks} tracks</p>
+            <Link style={{textDecoration: 'none', color: '#fff'}} to ={`topchart/${chart.id}`}>
+                <div className='chart-box'>
+                    
+                    <img src={chart.picture} alt="track image" className="chart-img" />
+                    <div>
+                        <h3>{chart.title}</h3>
+                        <p className='chart-name'>{chart.user.name}</p>
+                        <p className='chart-time'>{chart.nb_tracks} tracks</p>
+                    </div>
                 </div>
-            </div>
+            </Link>
+            
             
             {/*<img src={yellowHeart} alt="a yellow heart" className="yellow-heart" />*/}
             {chart.isFavorite?
