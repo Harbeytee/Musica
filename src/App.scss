@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+ // position: fixed;
+  box-sizing: border-box;
+}
+
+
+body {
+    background-color: #1D2123;
+    font-family: 'Quicksand', sans-serif;
+   //border-radius: 50%;
+    //padding-bottom: 7rem;
+    //height: 100%;
+    //width: 100%;
+}
+#root {
+  width: 100%;
+  right: 0;
+  position: absolute;
+}
+
+@mixin centerize {
+  display: 'flex';
+  justify-content: 'center';
+  align-items: 'center';
+}
+//components
+
+@import './components/components.scss';
+
+//home 
+
+@import './home/home.scss';
+
+//topchart detail
+@import './home/ViewChart/chartdetail.scss';
+
+
+//collection
+@import './collections/collection.scss';
+
