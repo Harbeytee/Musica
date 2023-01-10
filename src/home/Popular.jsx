@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Context } from '../Context.jsx'
+import { Context } from '../Context/Context.jsx'
 import spinner from './ViewChart/spinner.gif'
 export default function NewReleases() {
     const {loading, popularTracks, setTrackIndex, setMusic, setMusicTracks } = useContext(Context)
@@ -20,7 +20,7 @@ export default function NewReleases() {
     ))
 
   return (
-    <section style={{marginTop: 0}} id='new-release-container'>
+    <section style={{marginTop: '0.4rem'}} id='new-release-container'>
       <h2>Popular in your area</h2>
       
       {loading? 

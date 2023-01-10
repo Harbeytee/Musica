@@ -7,6 +7,25 @@ $padding: 1.8rem 0.35rem 1.8rem 1.8rem;
 $minwidth: 895px;
 
 // start search component
+.message {
+    height: 50px;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    position: fixed;
+    top: 90px;
+    //right: 50%;
+    margin: 0 auto;
+    color: white;
+    z-index: 100;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadein 0.1s linear;
+    @include centerize;
+}
+
 form {
     display: flex;
     justify-content: space-between;
@@ -201,7 +220,7 @@ input:focus {
 
 .play-music {
     
-    height: 90px;
+    height: 100px;
     position: fixed;
     width: 100%;
     bottom: 0;

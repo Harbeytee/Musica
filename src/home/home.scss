@@ -14,6 +14,7 @@
     margin-left: 1rem;
     margin-right: 1.2rem;
     padding-bottom: 7rem;
+    animation: fadein 1.2s linear;
 }
 .first-section {
     margin-left: 1rem;
@@ -164,46 +165,20 @@ article {
     display: flex;
     overflow-x: scroll; 
     margin-top: 1.2rem;
-    //background-color: transparent;
+    //background-color: white;
     
     
 }
-/*::-webkit-scrollbar {
-    background-color: transparent;
-    width: 1px;
-    
-    //height:14px;
-}*/
 
-/*body::-webkit-scrollbar {
-    width: 1em;
-  }
-   
-  body::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-   
-  }
-   
-  body::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-    outline: 1px solid slategrey;
 
-  }
-
-  html::-webkit-scrollbar {
-    width: 16px;
-    height: 16px;
-}*/
 html::-webkit-scrollbar-thumb {
     background: rgb(51, 51, 51);
     border: 0.1px solid rgba(255, 255, 255, 0.438);
     border-radius: 16px;
-    //box-shadow: inset 2px 2px 2px hsl(0deg 0% 100% / 25%), inset -2px -2px 2px rgb(0 0 0 / 25%);
+    
 }
 
 html::-webkit-scrollbar-track {
-    //background: linear-gradient(90deg,#434343,#434343 1px,#111 0,#111);
-   // background: rgb(75, 75, 75);
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -254,20 +229,17 @@ html::-webkit-scrollbar {
         width: 70%;
        
         //max-width: 686px;
-        //justify-content: space-around;
+       
         height: 373px;
         position: relative;
         border-radius: 40px 40px 40px 40px;
-        //background-image: url('../home/images/vector.svg');
+        
 
         .vector {
             position: absolute;
             top: 0px;
             right: 0px;
-            //left: 0px;
-            //bottom: 0px;
-            //height: 100%;
-            //width: 100%;
+            
             border-radius: 40px;
             display: block;
         }
@@ -296,7 +268,7 @@ html::-webkit-scrollbar {
     .first-section {
         display: flex;
         width: 100%;
-        //align-items: flex-start;
+        
         
         
     }
@@ -305,7 +277,7 @@ html::-webkit-scrollbar {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        //width: 100%;
+        
         
         .chart-img {
             width: 63px;
@@ -337,11 +309,11 @@ html::-webkit-scrollbar {
 .clicked2 {
     svg {
         width: 20px;
-        //filter: drop-shadow(0.5px 0.5px 0.2em #facd66e6) drop-shadow(-0.5px -0.5px 5em #facd66e6); 
+        
         path {
             fill: #facd66;
             fill-opacity: 0.8;
-            //box-shadow: 15px 15px 19.3904px rgba(250, 205, 102, 0.7);
+            
             
         }
     }
@@ -363,8 +335,6 @@ html::-webkit-scrollbar {
     align-items: center;
     width: 45px;
     height: 45px;
-    
-    
     border: 1px solid rgba(255, 255, 255, 0.11);;
     background-color: transparent;
     border-radius: 50%;

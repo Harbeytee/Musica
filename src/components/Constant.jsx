@@ -1,5 +1,5 @@
 import React, {useRef, useEffect, useState, useContext} from 'react'
-import { Context } from '../Context'
+import { Context } from '../Context/Context'
 import SideMenu from './SideMenu'
 import Search from './Search'
 import PlayMusic from './PlayMusic'
@@ -10,11 +10,17 @@ import { Outlet } from 'react-router-dom'
 export default function Constant() {
   
 
-  const {display, node} = useContext(Context)
+  const {display, node, displayMessage, message} = useContext(Context)
 
-
+  const style = {
+    display: 'grid',
+    placeItems: 'center'
+  }
   return (
     <>
+      {
+        displayMessage && <div style={style}><p className='message'>{message}</p></div>
+      }
         
         <SideMenu node={node} display={display}/>
         <PlayMusic />

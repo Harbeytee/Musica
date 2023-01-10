@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState} from 'react'
-import { Context } from '../Context'
+import { Context } from '../Context/Context'
 import play from './images/play.svg'
 import useHover from './useHover'
 export default function Likes() {

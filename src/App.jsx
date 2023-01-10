@@ -1,6 +1,6 @@
 import React from 'react'
 import Constant from './components/Constant'
-import Provider from './Context'
+import Provider from './Context/Context'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './home/Home'
 //import TopCharts from './home/TopCharts'

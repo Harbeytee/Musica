@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext} from 'react'
 import spinner from './spinner.gif'
 import axios from 'axios'
-import { Context } from '../../Context'
+import { Context } from '../../Context/Context'
 import { useParams } from 'react-router-dom'
 import TopComponent from './TopComponent'
 import BottomComponent from './BottomComponent'

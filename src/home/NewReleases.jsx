@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Context } from '../Context.jsx'
+import { Context } from '../Context/Context.jsx'
 //import newReleases from './newRelease.js'
 import spinner from './ViewChart/spinner.gif'
 export default function NewReleases() {

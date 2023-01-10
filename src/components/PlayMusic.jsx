@@ -7,7 +7,7 @@ import pause from './icons/pause.webp'
 import next from './icons/next.webp'
 import repeat from './icons/repeat.svg'
 import speaker from './icons/speaker.webp'
-import { Context } from '../Context'
+import { Context } from '../Context/Context'
   function PlayMusic() {
     
   const [test, setTest] = useState(false)
@@ -156,24 +156,7 @@ import { Context } from '../Context'
    
     
   }, [trackIndex, musicTracks]);
-  /*const [isReadyer, setIsReadyer] = useState(false)
-  useEffect(() => {
-    if(test == true) {
-      audioRef.current.pause();
-
-      audioRef.current = new Audio(audioSrc);
-      
-      setTrackProgress(audioRef.current.currentTime);
-      if(isReadyer) {
-        audioRef.current.play();
-        setIsPlaying(true)
-        startTimer()
-      }
-      setIsReadyer(true)
-    }
-   
-    
-  }, [musicTracks]);*/
+  
 
   
 
@@ -194,6 +177,16 @@ import { Context } from '../Context'
     };
   }, []);
 
+  function truncate(val) {
+    if(val.length > 14) {
+       const ans = val.slice(0, 14)
+            return ans + '...'
+    }
+    else {
+        return val
+    }
+}
+
   
   return (
     <section className='play-music'>
@@ -213,8 +206,9 @@ import { Context } from '../Context'
             {music.length !== 0 &&
             (<>
               <img src={music[trackIndex].album.cover_medium} alt="" />
-              <div>
-                <h4>{music[trackIndex].title}</h4>
+              <div style={{whiteSpace: 'nowrap'}}>
+              
+                <h4>{truncate(music[trackIndex].title)}</h4>
                 <p>{music[trackIndex].artist.name}</p>
               </div>
               </>)

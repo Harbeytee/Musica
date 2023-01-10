@@ -6,7 +6,7 @@ import vector from './images/topcharts/vector.svg'
 import vectormobile from './images/topcharts/vectormobile.svg'
 import NewReleases from './NewReleases'
 import Popular from './Popular'
-import { Context } from '../Context'
+import { Context } from '../Context/Context'
 import Search from '../components/Search'
 export default function Home() {
   const {hamburger, loading} = useContext(Context)

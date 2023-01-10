@@ -18,8 +18,16 @@ export default function Provider(props) {
     const [trackIndex, setTrackIndex] = useState(0);
     const audioSrc = musicTracks[trackIndex]
     const audioRef = useRef(new Audio(audioSrc));
-  
+    const [message, setMessage] = useState('')
+    const [displayMessage, setDisplayMessage] = useState(false)
 
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setDisplayMessage(false)
+        
+      }, 2000)
+      return () => clearTimeout(timer)
+}, [message])
 
    //localStorage.clear()
    
@@ -107,12 +115,16 @@ export default function Provider(props) {
 function addToLikes(newItem) {
   delete newItem.isFavorite
   setLikes(prevItems => [...prevItems, {...newItem}])
+  setMessage('Added To Likes')
+  setDisplayMessage(true)
   
 }
 
 
 function removeFromLikes(id) {
   setLikes(prevItems => prevItems.filter(item => item.id !== id))
+  setMessage('Removed From Likes')
+  setDisplayMessage(true)
 }
 
   //usa
@@ -159,7 +171,10 @@ function removeFromLikes(id) {
   
    
   return (
-    <Context.Provider  value={{search, handleChange, playlist, loading, tracks, toggleLikes, addToLikes, removeFromLikes, likes, display, hamburger, node, setLikes, music, musicTracks, setMusic, setMusicTracks, popularTracks, trackIndex, setTrackIndex, audioSrc, audioRef}}>
+    <Context.Provider  value={{search, handleChange, playlist, loading, tracks, 
+    toggleLikes, addToLikes, removeFromLikes, likes, display, hamburger, node, 
+    setLikes, music, musicTracks, setMusic, setMusicTracks, popularTracks, trackIndex, 
+    setTrackIndex, audioSrc, audioRef, message, displayMessage}}>
         {props.children}
     </Context.Provider>
   )

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Context } from '../Context'
+import { Context } from '../Context/Context'
 import spinner from './ViewChart/spinner.gif'
 import charts from './topchart'
 import YellowHrt from './images/topcharts/yellowheart.jsx'
