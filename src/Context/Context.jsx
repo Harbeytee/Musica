@@ -1,35 +1,63 @@
-import React, { createContext, useState, useEffect, useRef} from 'react'
-
+import React, { createContext, useState, useEffect, useRef, useReducer} from 'react'
+import musicPlayer from './MusicPlayer'
 const Context = createContext()
 import axios from 'axios'
 export default function Provider(props) {
-    const [search, setSearch] = useState("")
-    const [loading, setLoading] = useState(true)
-    const [tracks, setTracks] = useState([])
-    const [likes, setLikes] = useState(JSON.parse(localStorage.getItem('likes')) || [])
-    const [collection, setCollection] = useState([])
-    const [playlist, setPlaylist] = useState([])
+    const [state, setState] = useState({
+      search: '',
+      loading: true,
+      likes: JSON.parse(localStorage.getItem('likes')) || [],
+      error: null,
+      display: false,
+      message: '', //done
+      displayMessage: false, //done
+
+
+    })
+
+    const musicState = {
+      tracks: [],
+      playlist: [],
+      music: [],
+      musicTracks: [],
+      popularTracks: [],
+      trackIndex: 0,
+      collection: [],
+    }
+
+    const { message, likes } = state
+    const { reducer } = musicPlayer()
+    const [finalMusicState, dispatch] = useReducer(reducer, musicState)
+    const { musicTracks, trackIndex, playlist} = finalMusicState
+    //const [search, setSearch] = useState("")
+    //const [loading, setLoading] = useState(true)
+    //const [tracks, setTracks] = useState([])
+    //const [likes, setLikes] = useState(JSON.parse(localStorage.getItem('likes')) || [])
+    //const [collection, setCollection] = useState([])
+    //const [playlist, setPlaylist] = useState([])
     const [error, setError] = React.useState(null);
-    const [music, setMusic] = useState([])
-    const [musicTracks, setMusicTracks] = useState([])
+    //const [music, setMusic] = useState([])
+    //const [musicTracks, setMusicTracks] = useState([])
     const node = useRef()
-    const [display, setDisplay] = useState(false)
-    const [popularTracks, setPopularTracks] = useState([])
-    const [trackIndex, setTrackIndex] = useState(0);
+    //const [display, setDisplay] = useState(false)
+    //const [popularTracks, setPopularTracks] = useState([])
+    //const [trackIndex, setTrackIndex] = useState(0);
     const audioSrc = musicTracks[trackIndex]
     const audioRef = useRef(new Audio(audioSrc));
-    const [message, setMessage] = useState('')
-    const [displayMessage, setDisplayMessage] = useState(false)
+    //const [message, setMessage] = useState('')
+    //const [displayMessage, setDisplayMessage] = useState(false)
 
     useEffect(() => {
       const timer = setTimeout(() => {
-        setDisplayMessage(false)
+        setState(prev =>(
+          {...prev, displayMessage: false}
+          ))
         
       }, 2000)
       return () => clearTimeout(timer)
 }, [message])
 
-   //localStorage.clear()
+   localStorage.clear()
    
     useEffect(() => {
 
@@ -39,31 +67,44 @@ export default function Provider(props) {
     
     )
 
-    useEffect(() => {
-    localStorage.setItem('playlist', JSON.stringify(playlist))
-    
-    
-    }, [playlist]
-
-)
     function torf(playlist) {
 
       if(likes.length !== 0) {
-        
-        setPlaylist(playlist.map((list) => {
+        dispatch({
+          type:'Playlist', 
+          data: playlist.map((list) => ({...list, isFavorite: likes.some(like => like.id === list.id) ? true : false}))
+        })
+        /*setState(prev => (
+          {
+            ...prev,
+            playlist: playlist.map((list) => ({...list, isFavorite: likes.some(like => like.id === list.id) ? true : false}))
+          }
+        ))*/
+
+        /*setPlaylist(playlist.map((list) => {
           return {...list, isFavorite: likes.some(like => like.id === list.id) ? true : false}
-      }))
+      }))*/
         
       }
       else {
-        setPlaylist(playlist.map(list => ({...list, isFavorite: false})))
+        dispatch({
+          type:'Playlist', 
+          data: playlist.map(list => ({...list, isFavorite: false}))
+        })
+        /*setState(prev => (
+          {...prev,
+            playlist: playlist.map(list => ({...list, isFavorite: false}))
+        }))*/
+       
+       /* setPlaylist(playlist.map(list => ({...list, isFavorite: false})))*/
       }
      
       
     }
     
     function hamburger() {
-      setDisplay(true)
+      setState(prev =>({...prev, display: true}))
+      //setDisplay(true)
     }
 
     const clickOutside = (ref, handler) => {useEffect(() => {
@@ -84,12 +125,15 @@ export default function Provider(props) {
     
     }, [ref, handler] )}
   
-    clickOutside(node, () => setDisplay(false))
+    clickOutside(node, () => setState(prev => ({...prev, display: false})))    //setDisplay(false))
     
 
     const handleChange = (e) => {
         e.preventDefault()
-        setSearch(e.target.value)
+        setState(prev =>(
+          {...prev, search: e.target.value}
+          ))
+        //setSearch(e.target.value)
     }
 
     
@@ -106,27 +150,45 @@ export default function Provider(props) {
       }
       return chart
   })
-  
-  setPlaylist(updatedPlaylist)
+  dispatch({type: 'Playlist', data: updatedPlaylist })
+  //setState(prev => ({...prev, playlist:updatedPlaylist}))
+  //setPlaylist(updatedPlaylist)
   
   
 }
 
 function addToLikes(newItem) {
   delete newItem.isFavorite
-  setLikes(prevItems => [...prevItems, {...newItem}])
-  setMessage('Added To Likes')
-  setDisplayMessage(true)
+ 
+  //setLikes(prevItems => [...prevItems, {...newItem}])
+  //setMessage('Added To Likes')
+  setState(prev =>(
+    {...prev, 
+      message:'Added To Likes', 
+      displayMessage: true,
+      likes: [...likes, {...newItem}]
+    }
+    ))
+  //setDisplayMessage(true)
   
 }
 
 
 function removeFromLikes(id) {
-  setLikes(prevItems => prevItems.filter(item => item.id !== id))
-  setMessage('Removed From Likes')
-  setDisplayMessage(true)
+  //setLikes(prevItems => prevItems.filter(item => item.id !== id))
+  //setMessage('Removed From Likes')
+  //setDisplayMessage(true)
+  setState(prev =>(
+    {...prev, 
+      message:'Removed From Likes', 
+      displayMessage: true,
+      likes: likes.filter(item => item.id !== id)
+    }
+    ))
 }
-
+useEffect(() => {
+  console.log(finalMusicState)
+}, [finalMusicState])
   //usa
  /* useEffect(() => {
     axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1313621735?limit=10')
@@ -136,7 +198,7 @@ function removeFromLikes(id) {
   //nigeria
   useEffect(() => {
     axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1362516565?limit=10')
-    .then(res => setPopularTracks(res.data.tracks.data))
+    .then(res => dispatch({type: 'PopularTracks', data: res.data.tracks.data})/*setState(prev => ({...prev, popularTracks:res.data.tracks.data}))*/)
   }, [])
 
  useEffect(() => {
@@ -146,16 +208,29 @@ function removeFromLikes(id) {
     let res = response.data
     console.log(res)
     torf(res.playlists.data.filter((res, index) => index > 1 && index < 5))
+    dispatch({type: 'Tracks', data: res.tracks.data})
+    setState(prev => ({...prev, loading:false}))
+    /*setState(prev =>(
+      {...prev, 
+        tracks: res.tracks.data.map(track => ({...track, isFavorite: false})),
+        music: res.tracks.data,
+        musicTracks: res.tracks.data.map(music => music.preview),
+        loading: false,
+
+      }
+    ))*/
     
-    setTracks(res.tracks.data.map(track => {
+    /*setTracks(res.tracks.data.map(track => {
       return {...track, isFavorite: false}
-    }))
+    }))*/
    
-    setMusic(res.tracks.data)
+    /*setMusic(res.tracks.data)
     setMusicTracks(res.tracks.data.map(music => music.preview))
 
-    
-    setLoading(false)
+    setState(prev =>(
+      {...prev, loading: false}
+      ))*/
+    //setLoading(false)
     
 
   })
@@ -171,10 +246,10 @@ function removeFromLikes(id) {
   
    
   return (
-    <Context.Provider  value={{search, handleChange, playlist, loading, tracks, 
-    toggleLikes, addToLikes, removeFromLikes, likes, display, hamburger, node, 
-    setLikes, music, musicTracks, setMusic, setMusicTracks, popularTracks, trackIndex, 
-    setTrackIndex, audioSrc, audioRef, message, displayMessage}}>
+    <Context.Provider  value={{handleChange, /*playlist, /*loading,*/ /*tracks*/ 
+    toggleLikes, addToLikes, removeFromLikes, likes, /*display,*/ hamburger, node, 
+    /*setLikes, /*music, musicTracks, setMusic, setMusicTracks, popularTracks, /*trackIndex, 
+    setTrackIndex,*/ audioSrc, audioRef, state, setState, dispatch, finalMusicState}}>
         {props.children}
     </Context.Provider>
   )

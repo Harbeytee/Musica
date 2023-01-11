@@ -10,8 +10,9 @@ import { Outlet } from 'react-router-dom'
 export default function Constant() {
   
 
-  const {display, node, displayMessage, message} = useContext(Context)
+  const {node, state} = useContext(Context)
 
+  const {displayMessage, message, display} = state
   const style = {
     display: 'grid',
     placeItems: 'center'

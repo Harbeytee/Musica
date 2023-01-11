@@ -17,7 +17,10 @@ import { Context } from '../Context/Context'
   const [shuffle, setShuffle] = useState(false)
   
   //console.log(isPlaying)
-  const { musicTracks, music, trackIndex, setTrackIndex, audioSrc, audioRef } = useContext(Context)
+  const {audioSrc, audioRef, state, setState, finalMusicState, dispatch } = useContext(Context)
+
+  //const {dispatch, finalMusicState} = state
+  const {trackIndex, music, musicTracks} = finalMusicState
   //console.log(tracks)
   const track =[
     'https://www.bensound.com/bensound-music/bensound-buddy.mp3', 'https://www.bensound.com//bensound-music/bensound-sunny.mp3', 'https://www.bensound.com/bensound-music/bensound-slowmotion.mp3', 
@@ -65,18 +68,38 @@ import { Context } from '../Context/Context'
 
   const toPrevTrack = () => {
     if (trackIndex - 1 < 0) {
-      setTrackIndex(musicTracks.length - 1);
+      dispatch({type: 'ChangeTrackIndex', index: musicTracks.length - 1})
+      /*setState(prev => ({
+        ...prev,
+        trackIndex: musicTracks.length - 1
+      }))*/
+      //setTrackIndex(musicTracks.length - 1);
     } else {
-      setTrackIndex(trackIndex - 1);
+      dispatch({type: 'ChangeTrackIndex', index: trackIndex - 1})
+      /*setState(prev => ({
+        ...prev,
+        trackIndex: trackIndex - 1
+      }))*/
+      //setTrackIndex(trackIndex - 1);
     }
   
   }
   
   const toNextTrack = () => {
     if (trackIndex < musicTracks.length - 1) {
-      setTrackIndex(trackIndex + 1);
+      dispatch({type: 'ChangeTrackIndex', index: trackIndex + 1})
+      /*setState(prev => ({
+        ...prev,
+        trackIndex: trackIndex + 1
+      }))*/
+      //setTrackIndex(trackIndex + 1);
     } else {
-      setTrackIndex(0);
+      dispatch({type: 'ChangeTrackIndex', index: 0})
+      /*setState(prev => ({
+        ...prev,
+        trackIndex: 0
+      }))*/
+      //setTrackIndex(0);
     }
 
     

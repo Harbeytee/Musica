@@ -13,16 +13,18 @@ $minwidth: 895px;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
     position: fixed;
-    top: 90px;
+    top: 50px;
     //right: 50%;
     margin: 0 auto;
     color: white;
-    z-index: 100;
+    z-index: 10000;
     border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     animation: fadein 0.1s linear;
+    font-weight: 200;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
     @include centerize;
 }
 

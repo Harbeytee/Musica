@@ -1,8 +1,7 @@
 import React from 'react'
 import play from './icons/play.svg'
 import add from './icons/add.svg'
-import pinkHeart from './icons/pink-heart.svg'
-
+import PinkHeart from './icons/pink-heart.jsx'
 export default function TopComponent(props) {
   const style = {
     cursor: 'pointer',
@@ -21,8 +20,11 @@ export default function TopComponent(props) {
             <div className='buttons'>
               <span style={style} className='button' onClick={() => props.play()}><img src={play} alt="play button" className="play-btn2" /> Play all</span>
               <span style={style} className='button'><img src={add} alt="add to collection icon"  className="add-btn" /> Add to collection</span>
-              <span style={style} className='button'><img src={pinkHeart} alt="pink heart" className="pink-heart-btn" /> <span className='like-text'>Like</span></span>
-              
+              {props.isFavorite?
+              <span onClick={() => {props.toggle(props.chart.id); props.remove(props.chart.id)}} style={style} className='button'><PinkHeart fill='#E5524A'/> {/*<span className='like-text'>Unlike</span>*/}</span>
+              :
+              <span onClick={() => {props.toggle(props.chart.id); props.add(props.chart)}} style={style} className='button'><PinkHeart fill='none'/> <span className='like-text'>Like</span></span>
+              }
             </div>
 
           </div>

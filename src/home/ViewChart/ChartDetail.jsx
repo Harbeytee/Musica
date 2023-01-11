@@ -6,9 +6,10 @@ import { useParams } from 'react-router-dom'
 import TopComponent from './TopComponent'
 import BottomComponent from './BottomComponent'
 import Search from '../../components/Search'
-import topchart from '../topchart'
+
 export default function ChartDetail() {
-  const { playlist, hamburger, setMusic, setMusicTracks, setTrackIndex, audioSrc, audioRef } = useContext(Context)
+  const { hamburger, audioSrc, audioRef, addToLikes, removeFromLikes, toggleLikes, state, setState, finalMusicState, dispatch } = useContext(Context)
+  const { playlist } = finalMusicState
   const[loading, setLoading] = useState(true)
   const { id } = useParams()
   const [error, setError] = React.useState(null);
@@ -17,18 +18,35 @@ export default function ChartDetail() {
  
   function playAll () {
     audioRef.current.pause()
-    setMusic(result.data)
-    setMusicTracks(result.data.map(track => track.preview))
+    dispatch({type: 'ChangeMusic', value: 0, data: result.data})
+    /*setState(prev =>(
+      {...prev,
+        music: result.data,
+        musicTracks: result.data.map(track => track.preview),
+        trackIndex: 0,
+
+    }
+    ))*/
+    //setMusic(result.data)
+    //setMusicTracks(result.data.map(track => track.preview))
     audioRef.current = new Audio(audioSrc);
-    setTrackIndex(0)
+    //setTrackIndex(0)
     
   }
 
   function changeMusic(val) {
-      
-    setMusic(result.data)
-    setMusicTracks(result.data.map(track => track.preview))
-    setTrackIndex(val)
+    dispatch({type: 'ChangeMusic', value: val, data: result.data})
+    /*setState(prev =>(
+      {...prev,
+        music: result.data,
+        musicTracks: result.data.map(track => track.preview),
+        trackIndex: val,
+
+    }
+    ))*/
+    //setMusic(result.data)
+    //setMusicTracks(result.data.map(track => track.preview))
+    //setTrackIndex(val)
   }
 
   useEffect(() => {
@@ -65,7 +83,7 @@ export default function ChartDetail() {
       
         <div className='body'>
 
-          <TopComponent trackImg={detail.picture_medium} desc={detail.user.name} trackName={detail.title} songs={result.data.length} play={playAll}/>
+          <TopComponent toggle={toggleLikes} chart={detail} add={addToLikes} remove={removeFromLikes} isFavorite={detail.isFavorite} trackImg={detail.picture_medium} desc={detail.user.name} trackName={detail.title} songs={result.data.length} play={playAll}/>
 
           <BottomComponent tracks={result.data} changeMusic={changeMusic}/>
           

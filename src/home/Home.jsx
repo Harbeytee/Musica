@@ -9,7 +9,8 @@ import Popular from './Popular'
 import { Context } from '../Context/Context'
 import Search from '../components/Search'
 export default function Home() {
-  const {hamburger, loading} = useContext(Context)
+  const {hamburger, state} = useContext(Context)
+  const { loading } = state
   const style = {
       display: 'flex',
       flexDirection: 'column',

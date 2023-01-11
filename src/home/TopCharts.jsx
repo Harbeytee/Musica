@@ -8,10 +8,11 @@ import { Link } from 'react-router-dom'
 
 export default function TopCharts() {
    
- const { playlist, loading, toggleLikes, addToLikes, removeFromLikes } = useContext(Context)
+ const {toggleLikes, addToLikes, removeFromLikes, state, finalMusicState } = useContext(Context)
     
+    const {loading} = state
  
-    const top = playlist.map(chart => (
+    const top = finalMusicState.playlist.map(chart => (
         <div  className='chart' key={chart.id}>
             <Link style={{textDecoration: 'none', color: '#fff'}} to ={`topchart/${chart.id}`}>
                 <div className='chart-box'>
