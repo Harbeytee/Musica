@@ -8,8 +8,8 @@ import BottomComponent from './BottomComponent'
 import Search from '../../components/Search'
 
 export default function ChartDetail() {
-  const { hamburger, audioSrc, audioRef, addToLikes, removeFromLikes, toggleLikes, state, setState, finalMusicState, dispatch } = useContext(Context)
-  const { playlist } = finalMusicState
+  const { hamburger, audioSrc, audioRef, add, remove, toggleLikes, finalMusicState, dispatch } = useContext(Context)
+  const { playlist, collection } = finalMusicState
   const[loading, setLoading] = useState(true)
   const { id } = useParams()
   const [error, setError] = React.useState(null);
@@ -19,34 +19,15 @@ export default function ChartDetail() {
   function playAll () {
     audioRef.current.pause()
     dispatch({type: 'ChangeMusic', value: 0, data: result.data})
-    /*setState(prev =>(
-      {...prev,
-        music: result.data,
-        musicTracks: result.data.map(track => track.preview),
-        trackIndex: 0,
-
-    }
-    ))*/
-    //setMusic(result.data)
-    //setMusicTracks(result.data.map(track => track.preview))
+   
     audioRef.current = new Audio(audioSrc);
-    //setTrackIndex(0)
+   
     
   }
 
   function changeMusic(val) {
     dispatch({type: 'ChangeMusic', value: val, data: result.data})
-    /*setState(prev =>(
-      {...prev,
-        music: result.data,
-        musicTracks: result.data.map(track => track.preview),
-        trackIndex: val,
-
-    }
-    ))*/
-    //setMusic(result.data)
-    //setMusicTracks(result.data.map(track => track.preview))
-    //setTrackIndex(val)
+    
   }
 
   useEffect(() => {
@@ -57,7 +38,7 @@ export default function ChartDetail() {
     axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/${id}/tracks`)
     .then(response => {
       let res = response.data
-      
+      console.log(res)
       setResult(res)
       setLoading(false)
     })
@@ -83,7 +64,7 @@ export default function ChartDetail() {
       
         <div className='body'>
 
-          <TopComponent toggle={toggleLikes} chart={detail} add={addToLikes} remove={removeFromLikes} isFavorite={detail.isFavorite} trackImg={detail.picture_medium} desc={detail.user.name} trackName={detail.title} songs={result.data.length} play={playAll}/>
+          <TopComponent toggle={toggleLikes} chart={detail} add={add} remove={remove} songs={result.data.length} play={playAll} collection={collection}/>
 
           <BottomComponent tracks={result.data} changeMusic={changeMusic}/>
           

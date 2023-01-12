@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 export default function TopCharts() {
    
- const {toggleLikes, addToLikes, removeFromLikes, state, finalMusicState } = useContext(Context)
+ const {toggleLikes, add, remove, state, finalMusicState } = useContext(Context)
     
     const {loading} = state
  
@@ -29,11 +29,11 @@ export default function TopCharts() {
             
             {/*<img src={yellowHeart} alt="a yellow heart" className="yellow-heart" />*/}
             {chart.isFavorite?
-            <div onClick={() =>{ toggleLikes(chart.id); removeFromLikes(chart.id)}} className='clicked2 yellow-heart2'>
+            <div onClick={() =>{ toggleLikes(chart.id, 'likes'); remove(chart.id, 'likes')}} className='clicked2 yellow-heart2'>
                 <YellowHrt fill="#EFEEE0"  />
             </div>
             :
-            <div onClick={() => {toggleLikes(chart.id); addToLikes(chart)}} className='unclicked2 yellow-heart2'>
+            <div onClick={() => {toggleLikes(chart.id, 'likes'); add(chart, 'likes')}} className='unclicked2 yellow-heart2'>
                 <YellowHrt fill="#EFEEE0" />
             </div>
             }

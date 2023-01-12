@@ -1,54 +1,29 @@
-import React from 'react'
-import collections from './collection'
+import React, {useContext, useState} from 'react'
+//import collections from './collection'
+import spinner from '../assets/spinner.gif'
 import play from './images/play.svg'
 import useHover from './useHover'
+import { Context } from '../Context/Context'
+import { Link } from 'react-router-dom'
 
 export default function MyCollection() {
-  const {collection, setindex, hoverOn, hoverOff} = useHover(collections)
-  /*const [collection, setCollection] = useState(collections)
-  //console.log(collection)
-  const [index, setindex] = useState('')
-  //const [hovered, setHovered] = useState(false)
-  useEffect(() => {
-    console.log('changed')
-   console.log(collection)
-  }, [collection])
-  
-  function hoverOn(index) {
-    //console.log(id)
-    
-      setCollection(collection.map(prevC => {
-        return {...prevC, hovered:collection.indexOf(prevC) == index? true : false}
-      }))
-    
-    
-  }
-  //console.log('coll')
-  //if(index !== '') { console.log(() => hoverOn(index)) }
-  function hoverOff() {
-      //console.log()
-      setCollection(prev => prev.map(prevC => ({...prevC, hovered: prev.indexOf(prevC)== index? false : false})))
-    
-  }
-  /*useEffect(() => {
-    //console.log(hovered)
-  }, [hovered])*/
-  //hoverOff() 
-  //(index) => setCollection(prev => {...prev, hovered: false})
-
-    const cards = collection.map((card, index) => (
-      <div key={index} onMouseOver={() => {setindex(index); hoverOn(index)}} onMouseOut ={() => {setindex(index); hoverOff(index)}} className='card-container'>
-          <div  key={index} className='card-img-container' style={{backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.8)),url(${card.img})`}} >
+ 
+  const { collection, state } = useContext(Context)
+  const {collection2, setindex, hoverOn, hoverOff} = useHover(collection)
+  //<Link style={{textDecoration: 'none', color: '#fff'}} to ={`topchart/${chart.id}`}></Link>
+    const cards = collection2.map((card, index) => (
+      <Link style={{textDecoration: 'none', color: '#fff'}} to ={`/topchart/${card.id}`} key={index} onMouseOver={() => {setindex(index); hoverOn(index)}} onMouseOut ={() => {setindex(index); hoverOff(index)}} className='card-container'>
+          <div  key={index} className='card-img-container' style={{backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.8)),url(${card.picture_medium})`}} >
             
           
           </div>
           
           <div className="third-layer">
             <div className='card'>
-                <h2>Limits</h2>
+                <h2>{card.title}</h2>
                 
-                <p className='artist-name'>John watts</p>
-                <p style={{marginBottom: card.hovered? '0px' : '-43px', transition: 'all 0.4s ease-out'}} className="hid" >2.3m Likes</p>
+                <p className='artist-name'>{card.user.name}</p>
+                <p style={{marginBottom: card.hovered? '0px' : '-43px', transition: 'all 0.4s ease-out'}} className="hid" >{card.nb_tracks} tracks</p>
                 
                 
             </div>
@@ -57,12 +32,21 @@ export default function MyCollection() {
           </div>
           
           
-      </div>
+      </Link>
     ))
-
-  return (
-    <div className='collection-container'>
-        {cards}
-    </div>
-  )
+    if(state.loading) {
+      return ( <div style={{display: 'grid', placeItems: 'center', marginTop: '3rem'}}>
+          <img className='spinner2'  src={spinner} alt="" />
+        </div>
+      )
+    }
+    if(!state.loading) {
+      return (
+        <div className='collection-container'>
+            {cards}
+        </div>
+      )
+    }
+  
+  
 }

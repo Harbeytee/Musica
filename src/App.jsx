@@ -8,6 +8,7 @@ import CollectionRoute from './collections/Route'
 import MyCollection from './collections/MyCollection'
 import Likes from './collections/Likes'
 import ChartDetail from './home/ViewChart/ChartDetail'
+import SearchResults from './SearchResults/SearchResults'
 import './App.scss'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
               <Route path='likes' element={<Likes />} />
               
             </Route>
+            <Route path='searchresults/' element={<SearchResults />} />
             
 
           </Route>

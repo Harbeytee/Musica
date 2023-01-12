@@ -1,19 +1,27 @@
 import React, { createContext, useState, useEffect, useRef, useReducer} from 'react'
 import musicPlayer from './MusicPlayer'
+import addRemove from './Add-Remove'
 const Context = createContext()
 import axios from 'axios'
+
+import MyCollection from '../collections/MyCollection'
+
 export default function Provider(props) {
+  
+  const [myCollection, setMyCollection] = useState(JSON.parse(localStorage.getItem('myCollection')) || [])
     const [state, setState] = useState({
       search: '',
+      searching: false,
+      searchResults: [],
       loading: true,
-      likes: JSON.parse(localStorage.getItem('likes')) || [],
       error: null,
       display: false,
-      message: '', //done
-      displayMessage: false, //done
-
-
+      message: '', 
+      displayMessage: false,
+      likes: JSON.parse(localStorage.getItem('likes')) || [],
+      
     })
+   
 
     const musicState = {
       tracks: [],
@@ -23,29 +31,18 @@ export default function Provider(props) {
       popularTracks: [],
       trackIndex: 0,
       collection: [],
+      
     }
 
-    const { message, likes } = state
+    const { message, likes, search} = state
     const { reducer } = musicPlayer()
+    const { reducer2 } = addRemove()
     const [finalMusicState, dispatch] = useReducer(reducer, musicState)
-    const { musicTracks, trackIndex, playlist} = finalMusicState
-    //const [search, setSearch] = useState("")
-    //const [loading, setLoading] = useState(true)
-    //const [tracks, setTracks] = useState([])
-    //const [likes, setLikes] = useState(JSON.parse(localStorage.getItem('likes')) || [])
-    //const [collection, setCollection] = useState([])
-    //const [playlist, setPlaylist] = useState([])
-    const [error, setError] = React.useState(null);
-    //const [music, setMusic] = useState([])
-    //const [musicTracks, setMusicTracks] = useState([])
+    //const [finalChartState, dispatch2] = useReducer(reducer2, chartState)
+    const { musicTracks, trackIndex, playlist, collection} = finalMusicState
     const node = useRef()
-    //const [display, setDisplay] = useState(false)
-    //const [popularTracks, setPopularTracks] = useState([])
-    //const [trackIndex, setTrackIndex] = useState(0);
     const audioSrc = musicTracks[trackIndex]
     const audioRef = useRef(new Audio(audioSrc));
-    //const [message, setMessage] = useState('')
-    //const [displayMessage, setDisplayMessage] = useState(false)
 
     useEffect(() => {
       const timer = setTimeout(() => {
@@ -57,8 +54,17 @@ export default function Provider(props) {
       return () => clearTimeout(timer)
 }, [message])
 
-   localStorage.clear()
    
+   //localStorage.clear()
+    useEffect(() => {
+
+      localStorage.setItem('myCollection', JSON.stringify(myCollection))
+      
+        
+      }, [myCollection]
+    
+    )
+    
     useEffect(() => {
 
       localStorage.setItem('likes', JSON.stringify(likes))
@@ -66,45 +72,54 @@ export default function Provider(props) {
       }, [likes]
     
     )
+    
 
-    function torf(playlist) {
-
-      if(likes.length !== 0) {
+    function torf(val, type) {
+      if(type === 'playlist') {
+          if(likes.length !== 0 || myCollection.length != 0) {
         dispatch({
           type:'Playlist', 
-          data: playlist.map((list) => ({...list, isFavorite: likes.some(like => like.id === list.id) ? true : false}))
+          data: val.map((list) => 
+            ({...list,
+            isCollected: myCollection.some(coll => coll.id === list.id) ? true : false, 
+            isFavorite: likes.some(like => like.id === list.id) ? true : false}))
         })
-        /*setState(prev => (
-          {
-            ...prev,
-            playlist: playlist.map((list) => ({...list, isFavorite: likes.some(like => like.id === list.id) ? true : false}))
-          }
-        ))*/
-
-        /*setPlaylist(playlist.map((list) => {
-          return {...list, isFavorite: likes.some(like => like.id === list.id) ? true : false}
-      }))*/
         
       }
-      else {
-        dispatch({
-          type:'Playlist', 
-          data: playlist.map(list => ({...list, isFavorite: false}))
-        })
-        /*setState(prev => (
-          {...prev,
-            playlist: playlist.map(list => ({...list, isFavorite: false}))
-        }))*/
-       
-       /* setPlaylist(playlist.map(list => ({...list, isFavorite: false})))*/
+        else {
+          dispatch({
+            type:'Playlist', 
+            data: val.map(list => ({...list, isCollected: false, isFavorite: false}))
+          })
+        
+        }
       }
-     
-      
+    else if (type === 'collection') {
+        
+        if(myCollection.length > 0) {
+           
+          dispatch({
+            type: 'Collection', 
+             data: [...myCollection, 
+              ...val.map(list => ({...list, isCollected: myCollection.some(collection => collection.id === list.id) ? true : false}))]
+           })
+          
+        
+        }
+        else if(myCollection.length ===  0) {
+         
+          dispatch({
+            type: 'Collection', 
+             data: val.map(list => ({...list, isCollected: false}))
+           })
+         
+        }
+      }
     }
     
     function hamburger() {
       setState(prev =>({...prev, display: true}))
-      //setDisplay(true)
+     
     }
 
     const clickOutside = (ref, handler) => {useEffect(() => {
@@ -121,8 +136,6 @@ export default function Provider(props) {
         document.removeEventListener('mousedown', listener) 
     }
   
-    
-    
     }, [ref, handler] )}
   
     clickOutside(node, () => setState(prev => ({...prev, display: false})))    //setDisplay(false))
@@ -133,8 +146,32 @@ export default function Provider(props) {
         setState(prev =>(
           {...prev, search: e.target.value}
           ))
-        //setSearch(e.target.value)
+        
     }
+    const handleSubmit = (e,val) => {
+      e.preventDefault()
+      setState(prev => ({
+        ...prev,
+        searching: true,
+        search: ''
+      }))
+      val
+      axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/search?q=${search}`)
+      .then(res => {
+        //console.log(res.data)
+        setState(prev => ({
+          ...prev,
+          searching: false,
+          searchResults: res.data.data
+        }))
+      })
+      .catch(error => console.log(error))
+      
+    }
+
+    useEffect(() => {
+      console.log(state.searchResults)
+    }, [state.searchResults])
 
     
     
@@ -142,42 +179,77 @@ export default function Provider(props) {
  // http://developers.deezer.com/api/editorial/charts
  //https://thingproxy.freeboard.io/fetch/https://api.deezer.com/editorial/0/charts
  
- function toggleLikes(id) {
-  const updatedPlaylist = playlist.map(chart => {
-      if(chart.id === id) {
-          return {...chart, isFavorite: !chart.isFavorite}
-          
-      }
-      return chart
-  })
-  dispatch({type: 'Playlist', data: updatedPlaylist })
-  //setState(prev => ({...prev, playlist:updatedPlaylist}))
-  //setPlaylist(updatedPlaylist)
+ function toggleLikes(id, type) {
+    if(type === 'likes') {
+      const updatedPlaylist = playlist.map(chart => {
+        if(chart.id === id) {
+            return {...chart, isFavorite: !chart.isFavorite}
+            
+        }
+        return chart
+    })
+    dispatch({type: 'Playlist', data: updatedPlaylist })
+  }
+    else if(type === 'collection') {
+
+      const updatedPlaylist = playlist.map(chart => {
+        if(chart.id === id) {
+            return {...chart, isCollected: !chart.isCollected}
+            
+        }
+        return chart
+    })
+    dispatch({type: 'Playlist', data: updatedPlaylist })
+      /*
+      const updatedCollection = collection.map(chart => {
+        if(chart.id === id) {
+            return {...chart, isFavorite: !chart.isFavorite}
+            
+        }
+        return chart
+    })
+    dispatch({type: 'Collection', data: updatedCollection })*/
+  }
+  
   
   
 }
 
-function addToLikes(newItem) {
+
+
+
+function add(newItem, type) {
   delete newItem.isFavorite
- 
-  //setLikes(prevItems => [...prevItems, {...newItem}])
-  //setMessage('Added To Likes')
+
+  if(type === 'likes') {
   setState(prev =>(
     {...prev, 
       message:'Added To Likes', 
       displayMessage: true,
-      likes: [...likes, {...newItem}]
+      likes: [...likes, newItem]
     }
     ))
-  //setDisplayMessage(true)
+  }
+  else if(type === 'collection') {
+    setState(prev =>(
+      {...prev, 
+        message:'Added To Collection', 
+        displayMessage: true,
+        
+      }
+      ))
+      dispatch({type: 'Collection', data: [newItem, ...collection] })
+    setMyCollection(prev => [...prev, {...newItem}])
+
+  }
   
 }
 
 
-function removeFromLikes(id) {
-  //setLikes(prevItems => prevItems.filter(item => item.id !== id))
-  //setMessage('Removed From Likes')
-  //setDisplayMessage(true)
+
+
+function remove(id, type) {
+  if(type === 'likes') {
   setState(prev =>(
     {...prev, 
       message:'Removed From Likes', 
@@ -185,7 +257,20 @@ function removeFromLikes(id) {
       likes: likes.filter(item => item.id !== id)
     }
     ))
+  }
+  else if(type === 'collection') {
+    setState(prev =>(
+      {...prev, 
+        message:'Removed From Collection', 
+        displayMessage: true,
+        //collection: collection.filter(item => item.id !== id)
+      }
+      ))
+      dispatch({type: 'Collection', data: collection.filter(item => item.id !== id)})
+    setMyCollection(prev => prev.filter(item => item.id !== id))
+  }
 }
+
 useEffect(() => {
   console.log(finalMusicState)
 }, [finalMusicState])
@@ -196,10 +281,10 @@ useEffect(() => {
   }, [])*/
 
   //nigeria
-  useEffect(() => {
+ /* useEffect(() => {
     axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1362516565?limit=10')
-    .then(res => dispatch({type: 'PopularTracks', data: res.data.tracks.data})/*setState(prev => ({...prev, popularTracks:res.data.tracks.data}))*/)
-  }, [])
+    .then(res => dispatch({type: 'PopularTracks', data: res.data.tracks.data}))
+  }, [])*/
 
  useEffect(() => {
   axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/editorial/0/charts')
@@ -207,38 +292,24 @@ useEffect(() => {
     
     let res = response.data
     console.log(res)
-    torf(res.playlists.data.filter((res, index) => index > 1 && index < 5))
+    torf(res.playlists.data.filter((res, index) => index >= 2 && index <= 4), 'playlist')
+    torf(res.playlists.data.filter((res, index) => index >= 5 && index <= 9), 'collection')
     dispatch({type: 'Tracks', data: res.tracks.data})
     setState(prev => ({...prev, loading:false}))
-    /*setState(prev =>(
-      {...prev, 
-        tracks: res.tracks.data.map(track => ({...track, isFavorite: false})),
-        music: res.tracks.data,
-        musicTracks: res.tracks.data.map(music => music.preview),
-        loading: false,
-
-      }
-    ))*/
     
-    /*setTracks(res.tracks.data.map(track => {
-      return {...track, isFavorite: false}
-    }))*/
-   
-    /*setMusic(res.tracks.data)
-    setMusicTracks(res.tracks.data.map(music => music.preview))
-
-    setState(prev =>(
-      {...prev, loading: false}
-      ))*/
-    //setLoading(false)
     
-
   })
   .catch(error => {
-      setError(error);
-      console.log(error)
-    });
+    setState(prev =>({...prev, error: error}))
+    console.log(state.error)
+  });
 
+  axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1362516565?limit=10')
+  .then(res => dispatch({type: 'PopularTracks', data: res.data.tracks.data}))
+  .catch(error => {
+    setState(prev =>({...prev, error: error}))
+    console.log(state.error)
+  });
   
 }, [])
 
@@ -246,10 +317,9 @@ useEffect(() => {
   
    
   return (
-    <Context.Provider  value={{handleChange, /*playlist, /*loading,*/ /*tracks*/ 
-    toggleLikes, addToLikes, removeFromLikes, likes, /*display,*/ hamburger, node, 
-    /*setLikes, /*music, musicTracks, setMusic, setMusicTracks, popularTracks, /*trackIndex, 
-    setTrackIndex,*/ audioSrc, audioRef, state, setState, dispatch, finalMusicState}}>
+    <Context.Provider  value={{handleChange,
+    toggleLikes, add, remove, likes, hamburger, node,
+    audioSrc, audioRef, state, dispatch, finalMusicState, collection, handleSubmit}}>
         {props.children}
     </Context.Provider>
   )

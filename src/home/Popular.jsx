@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Context } from '../Context/Context.jsx'
 import spinner from './ViewChart/spinner.gif'
 export default function NewReleases() {
-    const {state, setState, dispatch, finalMusicState} = useContext(Context)
+    const {state, dispatch, finalMusicState} = useContext(Context)
     const {popularTracks} = finalMusicState
     const { loading } = state
     /*function changeMusic(val) {

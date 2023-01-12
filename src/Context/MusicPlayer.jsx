@@ -10,7 +10,6 @@ export default function musicPlayer() {
                     musicTracks: action.data.map(track => track.preview),
                     trackIndex: action.value
                 }
-                
             case 'PopularTracks':
                 return {
                     ...state, 
@@ -30,6 +29,11 @@ export default function musicPlayer() {
                     ...state,
                     playlist: action.data
                   }
+            case 'Collection':
+                return {
+                    ...state,
+                    collection: action.data
+                    }
             case 'ChangeTrackIndex': 
                   return {
                     ...state,

@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function useHover(val) {
-    const [collection, setCollection] = useState(val)
+  
+const [collection2, setCollection] = useState(val)
+  
+  
+    useEffect(() => {
+        setCollection(val)
+    }, [val])
+    
     const [index, setindex] = useState('')
     function hoverOn(index) {
         //console.log(id)
         
-          setCollection(collection.map(prevC => {
-            return {...prevC, hovered:collection.indexOf(prevC) == index? true : false}
+          setCollection(collection2.map(prevC => {
+            return {...prevC, hovered:collection2.indexOf(prevC) == index? true : false}
           }))
         
         
@@ -17,5 +24,5 @@ export default function useHover(val) {
         setCollection(prev => prev.map(prevC => ({...prevC, hovered: prev.indexOf(prevC)== index? false : false})))
       
     }
-  return {collection, setindex, hoverOn, hoverOff, index}
+  return {collection2, setindex, hoverOn, hoverOff, index}
 }
