@@ -143,16 +143,17 @@ export default function Provider(props) {
           ))
         
     }
-    const handleSubmit = (e, val) => {
+    const handleSubmit = (e) => {
       e.preventDefault()
       if(state.search.trim().split(/\s+/g).join('').length == 0) {
         setState(prev => ({
           ...prev,
           message: 'Search must not be empty!',
-          displayMessage: true
+          displayMessage: true,
+          
         }))
       }
-      else if(state.search.length !==0) {
+      else {
         
         setState(prev => ({
           ...prev,
@@ -160,7 +161,7 @@ export default function Provider(props) {
           search: '',
           displayMessage: false
         }))
-        val
+        
         axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/search?q=${search}`)
         .then(res => {
           console.log(res)
@@ -187,7 +188,9 @@ export default function Provider(props) {
           console.log(error)
           setState(prev => ({
             ...prev,
-            message: 'Not Found'
+            message: 'Not Found',
+            displayMessage: true,
+            searching: false
           }))
         })
      }

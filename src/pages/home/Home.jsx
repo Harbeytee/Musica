@@ -8,14 +8,18 @@ import NewReleases from './NewReleases'
 import Popular from './Popular'
 import { Context } from '../../Context/Context'
 import Search from '../../components/Search'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 export default function Home() {
+  const navigate = useNavigate()
   const {hamburger, state} = useContext(Context)
-  const { loading } = state
+  const { loading, searching } = state
   const style = {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-around'
   }
+  
   return (
     <>
     <Search background={'#1D2123'} position={'fixed'} hamburger={hamburger}/>
