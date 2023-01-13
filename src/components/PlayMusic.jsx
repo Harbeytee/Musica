@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import shuffleOn from './icons/shuffleOn.webp'
-import shuffleOff from './icons/shuffleoff.webp'
-import prev from './icons/prev.webp'
-import play from './icons/play.webp'
-import pause from './icons/pause.webp'
-import next from './icons/next.webp'
-import repeat from './icons/repeat.svg'
-import speaker from './icons/speaker.webp'
+import shuffleOn from '../assets/components/shuffleOn.webp'
+import shuffleOff from '../assets/components/shuffleoff.webp'
+import prev from '../assets/components/prev.webp'
+import play from '../assets/components/play.webp'
+import pause from '../assets/components/pause.webp'
+import next from '../assets/components/next.webp'
+import repeat from '../assets/components/repeat.svg'
+import speaker from '../assets/components/speaker.webp'
+
 import { Context } from '../Context/Context'
+
   function PlayMusic() {
     
   const [test, setTest] = useState(false)
@@ -25,14 +27,9 @@ import { Context } from '../Context/Context'
  const track =[
     'https://www.bensound.com/bensound-music/bensound-buddy.mp3', 'https://www.bensound.com//bensound-music/bensound-sunny.mp3', 'https://www.bensound.com/bensound-music/bensound-slowmotion.mp3', 
   ]
-  
-  
-  
-  
-  
-  
+ 
   const intervalRef = useRef();
-  const [isReady, setIsReady] = useState(false);
+ // const [isReady, setIsReady] = useState(false);
  
   const { duration } = audioRef.current;
   audioRef.current.volume = (volume/100).toFixed(1)
@@ -46,8 +43,7 @@ import { Context } from '../Context/Context'
     ? `${(trackProgress / duration) * 100}%`
     : "0%";
   const trackStyling = `${currentPercentage} 100%`
-    /*-webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(${currentPercentage}, yellow), color-stop(${currentPercentage}, pink))
-  `;*/
+   
 
 
   const startTimer = () => {
@@ -56,11 +52,16 @@ import { Context } from '../Context/Context'
     
     intervalRef.current = setInterval(() => {
       if (audioRef.current.ended) {
-        toNextTrack();
+        if(shuffle) {
+          dispatch({type: 'ChangeTrackIndex', index: Math.floor(Math.random() * musicTracks.length)})
+        }
+        else {
+          toNextTrack();
+        }
        
       } else {
         setTrackProgress(audioRef.current.currentTime);
-        console.log('interval')
+        
       }
     }, [1000]);
   };
@@ -114,6 +115,8 @@ import { Context } from '../Context/Context'
     console.log('scrub')
   };
 
+
+
   const onScrubEnd = () => {
     // If not already playing, start
     if (!isPlaying) {
@@ -122,7 +125,6 @@ import { Context } from '../Context/Context'
     startTimer();
     console.log('scrubend')
   };
-
 
   
   useEffect(() => {
@@ -151,17 +153,14 @@ import { Context } from '../Context/Context'
 
         audioRef.current = new Audio(audioSrc);
         setTrackProgress(audioRef.current.currentTime);
-        //if(isReady) {
+        
           audioRef.current.play();
           setIsPlaying(true)
           startTimer()
-        //}
-        //setIsReady(true)
+        
       }
       
    
-   
-    
   }, [trackIndex, musicTracks]);
   
 

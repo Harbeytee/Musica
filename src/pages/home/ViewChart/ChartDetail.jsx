@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext} from 'react'
-import spinner from './spinner.gif'
+import spinner from '../../../assets/spinner.gif'
 import axios from 'axios'
-import { Context } from '../../Context/Context'
+import { Context } from '../../../Context/Context'
 import { useParams } from 'react-router-dom'
 import TopComponent from './TopComponent'
 import BottomComponent from './BottomComponent'
-import Search from '../../components/Search'
+import Search from '../../../components/Search'
 
 export default function ChartDetail() {
   const { hamburger, audioSrc, audioRef, add, remove, toggleLikes, finalMusicState, dispatch } = useContext(Context)
@@ -13,9 +13,9 @@ export default function ChartDetail() {
   const[loading, setLoading] = useState(true)
   const { id } = useParams()
   const [error, setError] = React.useState(null);
-  const detail = playlist.find(chart => chart.id == id)
+  
   const [result, setResult] = useState([])
- 
+  const detail = playlist.find(chart => chart.id == id) 
   function playAll () {
     audioRef.current.pause()
     dispatch({type: 'ChangeMusic', value: 0, data: result.data})
@@ -24,6 +24,7 @@ export default function ChartDetail() {
    
     
   }
+  
 
   function changeMusic(val) {
     dispatch({type: 'ChangeMusic', value: val, data: result.data})
@@ -31,14 +32,14 @@ export default function ChartDetail() {
   }
 
   useEffect(() => {
-      console.log(audioSrc)
+      
   }, [audioSrc])
   useEffect(() => {
     
     axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/${id}/tracks`)
     .then(response => {
       let res = response.data
-      console.log(res)
+      
       setResult(res)
       setLoading(false)
     })
@@ -50,10 +51,11 @@ export default function ChartDetail() {
     
   }, [])
   
+ 
   
   
   
-  if (loading == true) {
+  if (loading == true || result == undefined || result.length == 0) {
     return <div style={{display: 'grid', placeItems: 'center', marginTop: '3rem'}}><img className='spinner2'  src={spinner} alt="" /></div>
   }
   else {
@@ -64,7 +66,7 @@ export default function ChartDetail() {
       
         <div className='body'>
 
-          <TopComponent toggle={toggleLikes} chart={detail} add={add} remove={remove} songs={result.data.length} play={playAll} collection={collection}/>
+          <TopComponent toggle={toggleLikes} chart={detail} add={add} remove={remove} songs={result.data.length} play={playAll} />
 
           <BottomComponent tracks={result.data} changeMusic={changeMusic}/>
           

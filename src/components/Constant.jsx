@@ -1,7 +1,7 @@
-import React, {useRef, useEffect, useState, useContext} from 'react'
+import React, { useContext } from 'react'
 import { Context } from '../Context/Context'
 import SideMenu from './SideMenu'
-import Search from './Search'
+//import Search from './Search'
 import PlayMusic from './PlayMusic'
 //import './_components.scss'
 

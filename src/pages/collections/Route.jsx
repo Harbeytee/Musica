@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { Outlet, Link } from 'react-router-dom'
-import { Context } from '../Context/Context'
-import Search from '../components/Search'
+import { Context } from '../../Context/Context'
+import Search from '../../components/Search'
 export default function CollectionRoute() {
   const [index, setIndex] = useState(1)
   const { hamburger } = useContext(Context)

@@ -1,7 +1,7 @@
 import React, { useContext, } from 'react'
-import { Context } from '../Context/Context.jsx'
+import { Context } from '../../Context/Context.jsx'
 //import newReleases from './newRelease.js'
-import spinner from './ViewChart/spinner.gif'
+import spinner from '../../assets/spinner.gif'
 export default function NewReleases() {
     const { state, finalMusicState, dispatch} = useContext(Context)
     const { tracks } = finalMusicState

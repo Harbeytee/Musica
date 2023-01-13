@@ -1,13 +1,13 @@
 import React, {useContext} from 'react'
-import likes from './images/likes.webp'
-import heart from './images/heart.svg'
+import likes from '../../assets/home/likes.webp'
+import heart from '../../assets/home/heart.svg'
 import TopCharts from './TopCharts'
-import vector from './images/topcharts/vector.svg'
-import vectormobile from './images/topcharts/vectormobile.svg'
+import vector from '../../assets/home/topcharts/vector.svg'
+import vectormobile from '../../assets/home/topcharts/vectormobile.svg'
 import NewReleases from './NewReleases'
 import Popular from './Popular'
-import { Context } from '../Context/Context'
-import Search from '../components/Search'
+import { Context } from '../../Context/Context'
+import Search from '../../components/Search'
 export default function Home() {
   const {hamburger, state} = useContext(Context)
   const { loading } = state

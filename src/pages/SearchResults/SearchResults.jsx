@@ -1,16 +1,25 @@
 import React, {useContext} from 'react'
-import Search from '../components/Search.jsx'
-import { Context } from '../Context/Context.jsx'
-import spinner from '../assets/spinner.gif'
-import { useEffect, useState } from 'react'
+import Search from '../../components/Search.jsx'
+import { Context } from '../../Context/Context.jsx'
+import spinner from '../../assets/spinner.gif'
+import { useNavigate } from 'react-router-dom'
+import convert from '../../hooks/useConvert.js'
 import './searchResults.scss'
 import useHover from '../collections/useHover.js'
-import play from '../collections/images/play.svg'
+import play from '../../assets/collection/play.svg'
+import { useEffect } from 'react'
 export default function SearchResults() {
     const { state, hamburger, dispatch } = useContext(Context)
+    //const { convert }  = useConvert()
     //const [index, setindex] = useState('')
     const {collection2, setindex, hoverOn, hoverOff} = useHover(state.searchResults)
-   
+    const navigate = useNavigate()
+    useEffect(() => {
+        if(state.searching === false && state.searchResults.length === 0 ) {
+            navigate('/')
+        }
+    }, [])
+    
     
     return (
         <div>
@@ -36,7 +45,7 @@ export default function SearchResults() {
                             <h2>{card.title}</h2>
                             
                             <p className='artist-name'>{card.artist.name}</p>
-                            <p style={{marginBottom: card.hovered? '0px' : '-43.5px', transition: 'all 0.4s ease-out'}} className="hid" >{card.duration}</p>
+                            <p style={{marginBottom: card.hovered? '0px' : '-43.5px', transition: 'all 0.4s ease-out'}} className="hid" >{convert(card.duration)}</p>
                             
                             
                         </div>
@@ -53,3 +62,4 @@ export default function SearchResults() {
         </div>
     )
 }
+

@@ -1,19 +1,8 @@
 import React from 'react'
-import whiteHeart from './icons/white-heart.svg'
-
+import whiteHeart from '../../../assets/viewchart/white-heart.svg'
+import convert from '../../../hooks/useConvert.js'
 export default function BottomComponent(props) {
-    function convert(val) {
-        let min = 0
-        let sec = val
-        
-        while (sec >= 60 ) {
-            min = min + 1
-          sec = sec - 60
-           
-        }
-        return `${min}:${sec >= 10 ? sec : '0' + sec}`
-        
-    }
+    
     const component = props.tracks.map((track, index) => (
         <div style={{cursor: 'pointer'}} onClick={() => props.changeMusic(index)} key={track.id} className="row">
             

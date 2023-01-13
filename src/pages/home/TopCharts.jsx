@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { Context } from '../Context/Context'
-import spinner from './ViewChart/spinner.gif'
-import charts from './topchart'
-import YellowHrt from './images/topcharts/yellowheart.jsx'
-import yellowHeart from './images/topcharts/yellow-heart.svg'
+import { Context } from '../../Context/Context'
+import spinner from '../../assets/spinner.gif'
+//import charts from './topchart'
+import YellowHrt from '../../assets/home/topcharts/yellowheart.jsx'
+//import yellowHeart from './images/topcharts/yellow-heart.svg'
 import { Link } from 'react-router-dom'
 
 export default function TopCharts() {

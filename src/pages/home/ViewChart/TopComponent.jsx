@@ -1,14 +1,14 @@
 import React from 'react'
-import play from './icons/play.svg'
-import add from './icons/add.svg'
-import PinkHeart from './icons/pink-heart.jsx'
+import play from '../../../assets/viewchart/play.svg'
+import add from '../../../assets/viewchart/add.svg'
+import PinkHeart from '../../../assets/viewchart/pink-heart.jsx'
 export default function TopComponent(props) {
   const style = {
     cursor: 'pointer',
     
   }
   //const collectionButton = props.collection.some(val => val.id === props.chart.id) ? <span style={style} className='button'><img src={add} alt="add to collection icon"  className="add-btn" /> Remove from collection</span> : <span style={style} className='button'><img src={add} alt="add to collection icon"  className="add-btn" /> Add to collection</span>
-
+  //collection
   
   return (
     <section className='top'>

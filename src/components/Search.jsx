@@ -2,8 +2,8 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { Context } from '../Context/Context'
-import musicIcon from  './icons/music-icon.svg'
-import searchIcon from  './icons/search-icon.webp'
+import musicIcon from  '../assets/components/music-icon.svg'
+import searchIcon from  '../assets/components/search-icon.webp'
  function Search({hamburger, background = '#1D2123', position ='fixed', marginLeft = '0'}) {
     const {state, handleChange, handleSubmit} = useContext(Context)
     const { search } = state

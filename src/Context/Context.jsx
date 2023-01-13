@@ -1,10 +1,8 @@
 import React, { createContext, useState, useEffect, useRef, useReducer} from 'react'
 import musicPlayer from './MusicPlayer'
-import addRemove from './Add-Remove'
 const Context = createContext()
 import axios from 'axios'
 
-import MyCollection from '../collections/MyCollection'
 
 export default function Provider(props) {
   
@@ -34,44 +32,41 @@ export default function Provider(props) {
       
     }
 
-    const { message, likes, search} = state
+    const { message, likes, search, displayMessage} = state
     const { reducer } = musicPlayer()
-    const { reducer2 } = addRemove()
-    const [finalMusicState, dispatch] = useReducer(reducer, musicState)
-    //const [finalChartState, dispatch2] = useReducer(reducer2, chartState)
+        const [finalMusicState, dispatch] = useReducer(reducer, musicState)
+    
     const { musicTracks, trackIndex, playlist, collection} = finalMusicState
     const node = useRef()
     const audioSrc = musicTracks[trackIndex]
     const audioRef = useRef(new Audio(audioSrc));
 
     useEffect(() => {
-      const timer = setTimeout(() => {
-        setState(prev =>(
-          {...prev, displayMessage: false}
-          ))
-        
-      }, 2000)
-      return () => clearTimeout(timer)
-}, [message])
+      
+        const timer = setTimeout(() => {
+          setState(prev =>(
+            {...prev, displayMessage: false}
+            ))
+          
+        }, 2000)
+        return () => clearTimeout(timer)
+      
+      
+      
+}, [message, displayMessage])
 
    
    //localStorage.clear()
     useEffect(() => {
-
-      localStorage.setItem('myCollection', JSON.stringify(myCollection))
+        localStorage.setItem('myCollection', JSON.stringify(myCollection))
       
-        
-      }, [myCollection]
-    
-    )
+      }, [myCollection])
     
     useEffect(() => {
-
+      
       localStorage.setItem('likes', JSON.stringify(likes))
       
-      }, [likes]
-    
-    )
+      }, [likes])
     
 
     function torf(val, type) {
@@ -81,7 +76,7 @@ export default function Provider(props) {
           type:'Playlist', 
           data: val.map((list) => 
             ({...list,
-            isCollected: myCollection.some(coll => coll.id === list.id) ? true : false, 
+            //isCollected: true, 
             isFavorite: likes.some(like => like.id === list.id) ? true : false}))
         })
         
@@ -89,7 +84,7 @@ export default function Provider(props) {
         else {
           dispatch({
             type:'Playlist', 
-            data: val.map(list => ({...list, isCollected: false, isFavorite: false}))
+            data: val.map(list => ({...list, /*isCollected: true*/ isFavorite: false}))
           })
         
         }
@@ -148,34 +143,43 @@ export default function Provider(props) {
           ))
         
     }
-    const handleSubmit = (e,val) => {
+    const handleSubmit = (e, val) => {
       e.preventDefault()
-      setState(prev => ({
-        ...prev,
-        searching: true,
-        search: ''
-      }))
-      val
-      axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/search?q=${search}`)
-      .then(res => {
-        //console.log(res.data)
+      if(state.search.length == 0) {
         setState(prev => ({
           ...prev,
-          searching: false,
-          searchResults: res.data.data
+          message: 'Search must not be empty!',
+          displayMessage: true
         }))
-      })
-      .catch(error => console.log(error))
-      
+      }
+      else if(state.search.length !==0) {
+        
+        setState(prev => ({
+          ...prev,
+          searching: true,
+          search: '',
+          displayMessage: false
+        }))
+        val
+        axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/search?q=${search}`)
+        .then(res => {
+          //console.log(res.data)
+          setState(prev => ({
+            ...prev,
+            searching: false,
+            searchResults: res.data.data
+          }))
+        })
+        .catch(error => {
+          console.log(error)
+          setState(prev => ({
+            ...prev,
+            message: 'Not Found'
+          }))
+        })
+     }
     }
 
-    useEffect(() => {
-      console.log(state.searchResults)
-    }, [state.searchResults])
-
-    
-    
-  
  // http://developers.deezer.com/api/editorial/charts
  //https://thingproxy.freeboard.io/fetch/https://api.deezer.com/editorial/0/charts
  
@@ -188,35 +192,24 @@ export default function Provider(props) {
         }
         return chart
     })
+    
     dispatch({type: 'Playlist', data: updatedPlaylist })
   }
-    else if(type === 'collection') {
 
-      const updatedPlaylist = playlist.map(chart => {
-        if(chart.id === id) {
-            return {...chart, isCollected: !chart.isCollected}
-            
-        }
-        return chart
+  else if(type === 'collection') {
+
+    const updatedPlaylist = playlist.map(chart => {
+      if(chart.id === id) {
+          return {...chart, isCollected: !chart.isCollected}
+          
+      }
+      return chart
     })
     dispatch({type: 'Playlist', data: updatedPlaylist })
-      /*
-      const updatedCollection = collection.map(chart => {
-        if(chart.id === id) {
-            return {...chart, isFavorite: !chart.isFavorite}
-            
-        }
-        return chart
-    })
-    dispatch({type: 'Collection', data: updatedCollection })*/
+      
   }
-  
-  
   
 }
-
-
-
 
 function add(newItem, type) {
   delete newItem.isFavorite
@@ -229,6 +222,7 @@ function add(newItem, type) {
       likes: [...likes, newItem]
     }
     ))
+    
   }
   else if(type === 'collection') {
     setState(prev =>(
@@ -240,13 +234,10 @@ function add(newItem, type) {
       ))
       dispatch({type: 'Collection', data: [newItem, ...collection] })
     setMyCollection(prev => [...prev, {...newItem}])
-
+    
   }
   
 }
-
-
-
 
 function remove(id, type) {
   if(type === 'likes') {

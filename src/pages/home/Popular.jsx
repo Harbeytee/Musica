@@ -1,23 +1,11 @@
-import React, { useContext, useState } from 'react'
-import { Context } from '../Context/Context.jsx'
-import spinner from './ViewChart/spinner.gif'
+import React, { useContext } from 'react'
+import { Context } from '../../Context/Context.jsx'
+import spinner from '../../assets/spinner.gif'
 export default function NewReleases() {
     const {state, dispatch, finalMusicState} = useContext(Context)
-    const {popularTracks} = finalMusicState
+    const { popularTracks } = finalMusicState
     const { loading } = state
-    /*function changeMusic(val) {
-        setState(prev => ({
-          ...prev,
-          music: popularTracks,
-          musicTracks: popularTracks.map(track => track.preview),
-          trackIndex: val
-        }))
-        /*setMusic(popularTracks)
-        setMusicTracks(popularTracks.map(track => track.preview))
-        setTrackIndex(val)*
-      }*/
    
-    //console.log(loading)
     const popular = popularTracks.map((track, index) => (
         <div className='new-release-box' key={track.id}>
             <img onClick={() => dispatch({type: 'ChangeMusic', value: index, data: popularTracks})} src={track.album.cover_medium} alt="track image" className="new-release-track" />

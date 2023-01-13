@@ -34,14 +34,14 @@ body {
 
 //home 
 
-@import './home/home.scss';
+@import './pages/home/home.scss';
 
 //topchart detail
-@import './home/ViewChart/chartdetail.scss';
+@import './pages/home/ViewChart/chartdetail.scss';
 
 
 //collection
-@import './collections/collection.scss';
+@import './pages/collections/collection.scss';
 
-@import './SearchResults/searchResults.scss'
+@import './pages/SearchResults/searchResults.scss'
 
