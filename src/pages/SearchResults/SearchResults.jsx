@@ -18,9 +18,12 @@ export default function SearchResults() {
         if(state.searching === false && state.searchResults.length === 0 ) {
             navigate('/')
         }
-    }, [])
+    }, [state.searchResults, state.searching])
     
-    
+    useEffect(() => {
+        console.log(state.searchResults)
+        console.log(state.searching)
+    }, [state.searchResults, state.searching])
     return (
         <div>
             <Search hamburger={hamburger}/>

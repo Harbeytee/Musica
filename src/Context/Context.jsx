@@ -145,7 +145,7 @@ export default function Provider(props) {
     }
     const handleSubmit = (e, val) => {
       e.preventDefault()
-      if(state.search.length == 0) {
+      if(state.search.trim().split(/\s+/g).join('').length == 0) {
         setState(prev => ({
           ...prev,
           message: 'Search must not be empty!',
@@ -163,12 +163,25 @@ export default function Provider(props) {
         val
         axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/search?q=${search}`)
         .then(res => {
-          //console.log(res.data)
-          setState(prev => ({
-            ...prev,
-            searching: false,
-            searchResults: res.data.data
-          }))
+          console.log(res)
+          if(res.data.error || res.data.data.length == 0) {
+            setState(prev => ({
+              ...prev,
+              message: 'Not Found',
+              displayMessage: true,
+              searching: false
+            }))
+            
+
+          }
+          else {
+            setState(prev => ({
+              ...prev,
+              searching: false,
+              searchResults: res.data.data
+            }))
+          }
+          
         })
         .catch(error => {
           console.log(error)
@@ -262,9 +275,7 @@ function remove(id, type) {
   }
 }
 
-useEffect(() => {
-  console.log(finalMusicState)
-}, [finalMusicState])
+
   //usa
  /* useEffect(() => {
     axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1313621735?limit=10')
@@ -282,7 +293,7 @@ useEffect(() => {
   .then (response => {
     
     let res = response.data
-    console.log(res)
+    
     torf(res.playlists.data.filter((res, index) => index >= 2 && index <= 4), 'playlist')
     torf(res.playlists.data.filter((res, index) => index >= 5 && index <= 9), 'collection')
     dispatch({type: 'Tracks', data: res.tracks.data})
