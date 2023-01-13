@@ -52,7 +52,8 @@ export default function SearchResults() {
                             
                             
                         </div>
-                        <img onClick={() => dispatch({type: 'ChangeMusic', data: collection2, value: index})} style={{animation: card.hovered? 'fadein 0.4s linear' : 'fadeout 0.4s linear', visibility: card.hovered? 'visible' : 'hidden'}} src={play} alt="play icon" className="play" />
+                        <img onClick={() => dispatch({type: 'ChangeMusic', data: collection2, value: index})} 
+                        style={{animation: card.hovered? 'fadein 0.4s linear' : 'fadeout 0.4s linear', visibility: card.hovered? 'visible' : 'hidden'}} src={play} alt="play icon" className="play" />
                         
                         </div>
                     

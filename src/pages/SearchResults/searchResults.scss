@@ -48,6 +48,7 @@
     .adventure-grid {
         grid-template-columns: 1fr;
         place-items: center;
+       
 
     }
     
@@ -64,5 +65,8 @@
         padding-top: 5rem;
         padding-left: 5rem;
         //place-items: center;
+        .play {
+            width: 52px;
+        }
     }
 }
