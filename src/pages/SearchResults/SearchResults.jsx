@@ -34,7 +34,7 @@ export default function SearchResults() {
                 <img className='spinner2'  src={spinner} alt="" />
             </div>
             :
-            <div style={{animation: 'fadein 0.3s linear'}} className="grid-2">
+            <div style={{animation: 'fadein 0.3s linear', paddingBottom:'8rem'}} className="grid-2">
                 <div className="adventure-grid">
                     {collection2.map((card, index) => (
                     <div style={{color: 'white'}} key={card.id} onMouseOver={() => {setindex(index); hoverOn(index)}} onMouseOut ={() => {setindex(index); hoverOff(index)}} className='card-container' >
