@@ -5,7 +5,7 @@ import spinner from '../../assets/spinner.gif'
 import { useNavigate } from 'react-router-dom'
 import convert from '../../hooks/useConvert.js'
 import './searchResults.scss'
-import useHover from '../collections/useHover.js'
+import useHover from '../../hooks/useHover.js'
 import play from '../../assets/collection/play.svg'
 import { useEffect } from 'react'
 export default function SearchResults() {

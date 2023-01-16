@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 //import collections from './collection'
 import spinner from '../../assets/spinner.gif'
 import play from '../../assets/collection/play.svg'
-import useHover from './useHover'
+import useHover from '../../hooks/useHover'
 import { Context } from '../../Context/Context'
 import axios from 'axios'
 

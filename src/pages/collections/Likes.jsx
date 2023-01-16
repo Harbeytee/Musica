@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState} from 'react'
 import { Context } from '../../Context/Context'
 import play from '../../assets/collection/play.svg'
-import useHover from './useHover'
+import useHover from '../../hooks/useHover'
 //import { Link } from 'react-router-dom'
 export default function Likes() {
   const { likes, dispatch, audioSrc, audioRef } = useContext(Context)
