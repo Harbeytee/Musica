@@ -5,7 +5,8 @@ import axios from 'axios'
 
 
 export default function Provider(props) {
-  
+  //old proxy https://api.allorigins.win/raw?url=
+
   const [myCollection, setMyCollection] = useState(JSON.parse(localStorage.getItem('myCollection')) || [])
     const [state, setState] = useState({
       search: '',
@@ -162,7 +163,7 @@ export default function Provider(props) {
           displayMessage: false
         }))
         
-        axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/search?q=${search}`)
+        axios.get(`https://corsproxy.io/?https://api.deezer.com/search?q=${search}`)
         .then(res => {
           console.log(res)
           if(res.data.error || res.data.data.length == 0) {
@@ -281,18 +282,18 @@ function remove(id, type) {
 
   //usa
  /* useEffect(() => {
-    axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1313621735?limit=10')
+    axios.get('https://corsproxy.io/?https://api.deezer.com/playlist/1313621735?limit=10')
     .then(res => console.log('res'))
   }, [])*/
 
   //nigeria
  /* useEffect(() => {
-    axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1362516565?limit=10')
+    axios.get('https://corsproxy.io/?https://api.deezer.com/playlist/1362516565?limit=10')
     .then(res => dispatch({type: 'PopularTracks', data: res.data.tracks.data}))
   }, [])*/
 
  useEffect(() => {
-  axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/editorial/0/charts')
+  axios.get('https://corsproxy.io/?https://api.deezer.com/editorial/0/charts')
   .then (response => {
     
     let res = response.data
@@ -309,7 +310,7 @@ function remove(id, type) {
     console.log(state.error)
   });
 
-  axios.get('https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/1362516565?limit=10')
+  axios.get('https://corsproxy.io/?https://api.deezer.com/playlist/1362516565?limit=10')
   .then(res => dispatch({type: 'PopularTracks', data: res.data.tracks.data}))
   .catch(error => {
     setState(prev =>({...prev, error: error}))
