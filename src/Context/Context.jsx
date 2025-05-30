@@ -293,7 +293,7 @@ function remove(id, type) {
   }, [])*/
 
  useEffect(() => {
-  axios.get('https://corsproxy.io/?https://api.deezer.com/editorial/0/charts')
+  axios.get('https://corsproxy.io/?url=https://api.deezer.com/editorial/0/charts')
   .then (response => {
     
     let res = response.data
