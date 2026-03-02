@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext} from 'react'
 import spinner from '../../../assets/spinner.gif'
 import axios from 'axios'
+import { deezerUrl } from '../../../config'
 import { Context } from '../../../Context/Context'
 import { useParams } from 'react-router-dom'
 import TopComponent from './TopComponent'
@@ -36,7 +37,7 @@ export default function ChartDetail() {
   }, [audioSrc])
   useEffect(() => {
     
-    axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/${id}/tracks`)
+    axios.get(deezerUrl(`/playlist/${id}/tracks`))
     .then(response => {
       let res = response.data
       

@@ -5,6 +5,7 @@ import play from '../../assets/collection/play.svg'
 import useHover from '../../hooks/useHover'
 import { Context } from '../../Context/Context'
 import axios from 'axios'
+import { deezerUrl } from '../../config'
 
 
 export default function MyCollection() {
@@ -16,7 +17,7 @@ export default function MyCollection() {
 
   function playAll (id)  {
     
-    axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/${id}/tracks`)
+    axios.get(deezerUrl(`/playlist/${id}/tracks`))
     .then(response => {
       let res =  response.data
       setResult(res)

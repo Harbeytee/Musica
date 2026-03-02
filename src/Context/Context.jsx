@@ -2,10 +2,10 @@ import React, { createContext, useState, useEffect, useRef, useReducer} from 're
 import musicPlayer from './MusicPlayer'
 const Context = createContext()
 import axios from 'axios'
+import { deezerUrl } from '../config'
 
 
 export default function Provider(props) {
-  //old proxy https://api.allorigins.win/raw?url=
 
   const [myCollection, setMyCollection] = useState(JSON.parse(localStorage.getItem('myCollection')) || [])
     const [state, setState] = useState({
@@ -163,7 +163,7 @@ export default function Provider(props) {
           displayMessage: false
         }))
         
-        axios.get(`https://corsproxy.io/?https://api.deezer.com/search?q=${search}`)
+        axios.get(deezerUrl('/search', { q: search }))
         .then(res => {
           console.log(res)
           if(res.data.error || res.data.data.length == 0) {
@@ -293,7 +293,7 @@ function remove(id, type) {
   }, [])*/
 
  useEffect(() => {
-  axios.get('https://corsproxy.io/?url=https://api.deezer.com/editorial/0/charts')
+  axios.get(deezerUrl('/editorial/0/charts'))
   .then (response => {
     
     let res = response.data
@@ -310,7 +310,7 @@ function remove(id, type) {
     console.log(state.error)
   });
 
-  axios.get('https://corsproxy.io/?https://api.deezer.com/playlist/1362516565?limit=10')
+  axios.get(deezerUrl('/playlist/1362516565', { limit: 10 }))
   .then(res => dispatch({type: 'PopularTracks', data: res.data.tracks.data}))
   .catch(error => {
     setState(prev =>({...prev, error: error}))

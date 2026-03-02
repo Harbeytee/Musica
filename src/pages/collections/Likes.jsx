@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState} from 'react'
+import { deezerUrl } from '../../config'
 import { Context } from '../../Context/Context'
 import play from '../../assets/collection/play.svg'
 import useHover from '../../hooks/useHover'
@@ -11,7 +12,7 @@ export default function Likes() {
   const [error, setError] = useState('')
   function playAll (id)  {
     
-    axios.get(`https://api.allorigins.win/raw?url=https://api.deezer.com/playlist/${id}/tracks`)
+    axios.get(deezerUrl(`/playlist/${id}/tracks`))
     .then(response => {
       let res =  response.data
       setResult(res)
